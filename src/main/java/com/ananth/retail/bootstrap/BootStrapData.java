@@ -11,7 +11,6 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class BootStrapData implements CommandLineRunner {
-
     private final AuthorRepository authorRepository;
     private final BookRepository bookRepository;
     private final PublisherRepository publisherRepository;
@@ -25,31 +24,42 @@ public class BootStrapData implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
 
-        Author ananth = new Author("Ananth", "Satyanarayana");
-        Book book1 = new Book("123123", "Spring Framework");
+        System.out.println("Started in Bootstrap");
 
-        Author girish = new Author("Girish", "Nagaraj");
-        Book book2 = new Book("234321", "MDS Fundamentals");
+        Publisher publisher = new Publisher();
+        publisher.setName("Sapna Book House");
+        publisher.setCity("Bangalore");
+        publisher.setState("Karnataka");
 
-        Publisher publisher = new Publisher("Sapne Book House", "Majestic", "Bangalore", "Karnataka", 560076);
-
-        ananth.getBooks().add(book1);
-        book1.getAuthors().add(ananth);
-
-        authorRepository.save(ananth);
-        bookRepository.save(book1);
-
-        girish.getBooks().add(book2);
-        book2.getAuthors().add(girish);
-
-        authorRepository.save(girish);
-        bookRepository.save(book2);
         publisherRepository.save(publisher);
 
-        System.out.println("Started in Bootstrap");
-        System.out.println("Number of books " + bookRepository.count());
-        System.out.println("Number of publishers " + publisherRepository.count());
-        System.out.println(publisher.toString());
+        System.out.println("Publisher Count: " + publisherRepository.count());
 
+        Author smurthy = new Author("Sudha", "Murthy");
+        Book short_stories = new Book("Short Stories", "12345");
+        smurthy.getBooks().add(short_stories);
+        short_stories.getAuthors().add(smurthy);
+
+        short_stories.setPublisher(publisher);
+        publisher.getBooks().add(short_stories);
+
+        authorRepository.save(smurthy);
+        bookRepository.save(short_stories);
+        publisherRepository.save(publisher);
+
+        Author bhayrappa = new Author("S L", "Bhayrappa");
+        Book yaana = new Book("Yaana", "987654");
+        bhayrappa.getBooks().add(yaana);
+        yaana.getAuthors().add(bhayrappa);
+
+        yaana.setPublisher(publisher);
+        publisher.getBooks().add(yaana);
+
+        authorRepository.save(bhayrappa);
+        bookRepository.save(yaana);
+        publisherRepository.save(publisher);
+
+        System.out.println("Number of Books: " + bookRepository.count());
+        System.out.println("Publisher Number of Books: " + publisher.getBooks().size());
     }
 }
